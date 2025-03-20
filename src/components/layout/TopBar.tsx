@@ -1,7 +1,7 @@
 
 import { useTheme } from "@/context/ThemeContext";
 import { useSidebar } from "@/context/SidebarContext";
-import { Bell, Download, Menu, Moon, Search, Sun, User } from "lucide-react";
+import { Bell, Download, Menu, Moon, Search, Sun } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const TopBar = () => {
@@ -13,7 +13,7 @@ const TopBar = () => {
       <div className="flex items-center gap-4">
         <button 
           onClick={toggle}
-          className="hidden lg:flex p-2 rounded-md hover:bg-accent"
+          className="p-2 rounded-md hover:bg-accent transition-colors"
         >
           <Menu size={20} />
         </button>

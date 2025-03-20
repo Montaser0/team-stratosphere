@@ -18,7 +18,11 @@ const SidebarItem = ({ to, icon, label }: SidebarItemProps) => {
     <NavLink
       to={to}
       className={({ isActive }) =>
-        cn("sidebar-item", isActive && "active")
+        cn(
+          "flex items-center gap-3 px-3 py-2 rounded-md transition-colors", 
+          "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+          isActive ? "bg-sidebar-accent text-sidebar-accent-foreground font-medium" : "text-sidebar-foreground"
+        )
       }
     >
       {icon}
@@ -43,12 +47,13 @@ const Sidebar = () => {
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-40 w-64 bg-sidebar transform transition-transform duration-300 ease-in-out lg:translate-x-0",
+          "fixed inset-y-0 left-0 z-40 w-64 bg-sidebar-background transform transition-transform duration-300 ease-in-out lg:translate-x-0 overflow-hidden flex flex-col",
           isOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
-        <div className="flex flex-col h-full overflow-y-auto bg-sidebar no-scrollbar">
-          <div className="p-4 border-b border-sidebar-accent">
+        <div className="flex flex-col h-full overflow-y-auto bg-sidebar-background no-scrollbar">
+          {/* Logo */}
+          <div className="p-4 border-b border-sidebar-border">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-semibold text-lg">
                 A
@@ -59,7 +64,8 @@ const Sidebar = () => {
             </div>
           </div>
 
-          <div className="p-4 border-b border-sidebar-accent">
+          {/* User profile */}
+          <div className="p-4 border-b border-sidebar-border">
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 rounded-full overflow-hidden">
                 <img
@@ -75,22 +81,35 @@ const Sidebar = () => {
             </div>
           </div>
 
-          <nav className="p-2 space-y-1">
-            <p className="text-xs text-sidebar-muted-foreground px-3 py-2">DATA</p>
-            <SidebarItem to="/" icon={<Home size={18} />} label="Dashboard" />
-            <SidebarItem to="/team" icon={<Users size={18} />} label="Manage Team" />
-            <SidebarItem to="/contacts" icon={<Contact size={18} />} label="Contacts Information" />
-            <SidebarItem to="/invoices" icon={<FileText size={18} />} label="Invoices Balances" />
+          {/* Navigation */}
+          <nav className="flex-1 p-4 space-y-2">
+            <div className="mb-4">
+              <p className="text-xs text-sidebar-muted-foreground mb-2 px-3">DATA</p>
+              <div className="space-y-1">
+                <SidebarItem to="/" icon={<Home size={18} />} label="Dashboard" />
+                <SidebarItem to="/team" icon={<Users size={18} />} label="Manage Team" />
+                <SidebarItem to="/contacts" icon={<Contact size={18} />} label="Contacts Information" />
+                <SidebarItem to="/invoices" icon={<FileText size={18} />} label="Invoices Balances" />
+              </div>
+            </div>
             
-            <p className="text-xs text-sidebar-muted-foreground px-3 py-2 mt-4">PAGES</p>
-            <SidebarItem to="/profile" icon={<User size={18} />} label="Profile Form" />
-            <SidebarItem to="/calendar" icon={<Calendar size={18} />} label="Calendar" />
-            <SidebarItem to="/faq" icon={<HelpCircle size={18} />} label="FAQ Page" />
+            <div className="mb-4">
+              <p className="text-xs text-sidebar-muted-foreground mb-2 px-3">PAGES</p>
+              <div className="space-y-1">
+                <SidebarItem to="/profile" icon={<User size={18} />} label="Profile Form" />
+                <SidebarItem to="/calendar" icon={<Calendar size={18} />} label="Calendar" />
+                <SidebarItem to="/faq" icon={<HelpCircle size={18} />} label="FAQ Page" />
+              </div>
+            </div>
             
-            <p className="text-xs text-sidebar-muted-foreground px-3 py-2 mt-4">CHARTS</p>
-            <SidebarItem to="/bar-chart" icon={<BarChart3 size={18} />} label="Bar Chart" />
-            <SidebarItem to="/pie-chart" icon={<PieChart size={18} />} label="Pie Chart" />
-            <SidebarItem to="/line-chart" icon={<LineChart size={18} />} label="Line Chart" />
+            <div>
+              <p className="text-xs text-sidebar-muted-foreground mb-2 px-3">CHARTS</p>
+              <div className="space-y-1">
+                <SidebarItem to="/bar-chart" icon={<BarChart3 size={18} />} label="Bar Chart" />
+                <SidebarItem to="/pie-chart" icon={<PieChart size={18} />} label="Pie Chart" />
+                <SidebarItem to="/line-chart" icon={<LineChart size={18} />} label="Line Chart" />
+              </div>
+            </div>
           </nav>
         </div>
       </aside>
