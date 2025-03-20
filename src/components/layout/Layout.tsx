@@ -13,7 +13,7 @@ const Layout = () => {
       <Sidebar />
       <main
         className={cn(
-          "transition-all duration-300 ease-in-out",
+          "transition-all duration-300 ease-in-out min-h-screen",
           isOpen ? "lg:ml-64" : "ml-0"
         )}
       >

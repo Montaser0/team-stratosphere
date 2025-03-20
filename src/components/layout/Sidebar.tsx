@@ -15,9 +15,19 @@ interface SidebarItemProps {
 }
 
 const SidebarItem = ({ to, icon, label }: SidebarItemProps) => {
+  const { close } = useSidebar();
+  
+  // Close sidebar on mobile when clicking a link
+  const handleClick = () => {
+    if (window.innerWidth < 1024) {
+      close();
+    }
+  };
+  
   return (
     <NavLink
       to={to}
+      onClick={handleClick}
       className={({ isActive }) =>
         cn(
           "flex items-center gap-3 px-3 py-2 rounded-md transition-colors", 
@@ -37,13 +47,14 @@ const Sidebar = () => {
 
   return (
     <>
-      {/* Mobile sidebar toggle */}
-      <button 
-        onClick={toggle}
-        className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-md bg-sidebar-background text-sidebar-foreground"
-      >
-        {isOpen ? <X size={20} /> : <Menu size={20} />}
-      </button>
+      {/* Mobile overlay to close sidebar when clicking outside */}
+      {isOpen && (
+        <div 
+          className="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-30"
+          onClick={toggle}
+          aria-hidden="true"
+        />
+      )}
 
       {/* Sidebar */}
       <aside
@@ -53,6 +64,14 @@ const Sidebar = () => {
         )}
       >
         <div className="flex flex-col h-full overflow-y-auto bg-[#1a2233] no-scrollbar">
+          {/* Close button for mobile */}
+          <button 
+            onClick={toggle}
+            className="lg:hidden absolute top-4 right-4 p-2 rounded-md bg-[#283046] text-white"
+          >
+            <X size={20} />
+          </button>
+
           {/* Search box at the top */}
           <div className="p-4">
             <div className="relative">
