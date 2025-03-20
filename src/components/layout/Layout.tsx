@@ -9,7 +9,7 @@ const Layout = () => {
   const { isOpen } = useSidebar();
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#131c32]">
       <Sidebar />
       <main
         className={cn(

@@ -4,7 +4,8 @@ import { useSidebar } from "@/context/SidebarContext";
 import { cn } from "@/lib/utils";
 import { 
   BarChart3, Calendar, Contact, FileText, 
-  Home, LineChart, PieChart, User, Users, HelpCircle, X, Menu
+  Home, LineChart, PieChart, User, Users, HelpCircle, X, Menu,
+  Search
 } from "lucide-react";
 
 interface SidebarItemProps {
@@ -51,63 +52,52 @@ const Sidebar = () => {
           isOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
-        <div className="flex flex-col h-full overflow-y-auto bg-sidebar-background no-scrollbar">
-          {/* Logo */}
-          <div className="p-4 border-b border-sidebar-border">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-semibold text-lg">
-                A
-              </div>
-              <div>
-                <h2 className="font-bold text-sidebar-foreground">ADMINIS</h2>
-              </div>
+        <div className="flex flex-col h-full overflow-y-auto bg-[#1a2233] no-scrollbar">
+          {/* Search box at the top */}
+          <div className="p-4">
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Search"
+                className="w-full bg-[#283046] text-white py-2 pl-9 pr-4 rounded-md border-none focus:outline-none focus:ring-1 focus:ring-blue-500"
+              />
+              <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
             </div>
           </div>
 
-          {/* User profile */}
-          <div className="p-4 border-b border-sidebar-border">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full overflow-hidden">
-                <img
-                  src="/lovable-uploads/59eabdad-6cea-43e2-ab93-e2f5a501952f.png"
-                  alt="User avatar"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div>
-                <h3 className="font-semibold text-sidebar-foreground">Montaser Haj Omar</h3>
-                <p className="text-xs text-sidebar-muted-foreground">Website Admin</p>
-              </div>
-            </div>
+          {/* Dashboard heading */}
+          <div className="px-4 py-2">
+            <h1 className="text-2xl font-bold text-white">Dashboard</h1>
+            <p className="text-sm text-[#8a92a6] mt-1">Overview of your business</p>
           </div>
 
           {/* Navigation */}
-          <nav className="flex-1 p-4 space-y-2">
-            <div className="mb-4">
-              <p className="text-xs text-sidebar-muted-foreground mb-2 px-3">DATA</p>
+          <nav className="flex-1 p-4 space-y-6">
+            <div className="mb-2">
+              <p className="text-xs uppercase text-[#8a92a6] mb-3 px-3 font-semibold tracking-wider">Data</p>
               <div className="space-y-1">
-                <SidebarItem to="/" icon={<Home size={18} />} label="Dashboard" />
-                <SidebarItem to="/team" icon={<Users size={18} />} label="Manage Team" />
-                <SidebarItem to="/contacts" icon={<Contact size={18} />} label="Contacts Information" />
-                <SidebarItem to="/invoices" icon={<FileText size={18} />} label="Invoices Balances" />
+                <SidebarItem to="/" icon={<Home size={18} className="text-[#8a92a6]" />} label="Dashboard" />
+                <SidebarItem to="/team" icon={<Users size={18} className="text-[#8a92a6]" />} label="Manage Team" />
+                <SidebarItem to="/contacts" icon={<Contact size={18} className="text-[#8a92a6]" />} label="Contacts Information" />
+                <SidebarItem to="/invoices" icon={<FileText size={18} className="text-[#8a92a6]" />} label="Invoices Balances" />
               </div>
             </div>
             
-            <div className="mb-4">
-              <p className="text-xs text-sidebar-muted-foreground mb-2 px-3">PAGES</p>
+            <div className="mb-2">
+              <p className="text-xs uppercase text-[#8a92a6] mb-3 px-3 font-semibold tracking-wider">Pages</p>
               <div className="space-y-1">
-                <SidebarItem to="/profile" icon={<User size={18} />} label="Profile Form" />
-                <SidebarItem to="/calendar" icon={<Calendar size={18} />} label="Calendar" />
-                <SidebarItem to="/faq" icon={<HelpCircle size={18} />} label="FAQ Page" />
+                <SidebarItem to="/profile" icon={<User size={18} className="text-[#8a92a6]" />} label="Profile Form" />
+                <SidebarItem to="/calendar" icon={<Calendar size={18} className="text-[#8a92a6]" />} label="Calendar" />
+                <SidebarItem to="/faq" icon={<HelpCircle size={18} className="text-[#8a92a6]" />} label="FAQ Page" />
               </div>
             </div>
             
             <div>
-              <p className="text-xs text-sidebar-muted-foreground mb-2 px-3">CHARTS</p>
+              <p className="text-xs uppercase text-[#8a92a6] mb-3 px-3 font-semibold tracking-wider">Charts</p>
               <div className="space-y-1">
-                <SidebarItem to="/bar-chart" icon={<BarChart3 size={18} />} label="Bar Chart" />
-                <SidebarItem to="/pie-chart" icon={<PieChart size={18} />} label="Pie Chart" />
-                <SidebarItem to="/line-chart" icon={<LineChart size={18} />} label="Line Chart" />
+                <SidebarItem to="/bar-chart" icon={<BarChart3 size={18} className="text-[#8a92a6]" />} label="Bar Chart" />
+                <SidebarItem to="/pie-chart" icon={<PieChart size={18} className="text-[#8a92a6]" />} label="Pie Chart" />
+                <SidebarItem to="/line-chart" icon={<LineChart size={18} className="text-[#8a92a6]" />} label="Line Chart" />
               </div>
             </div>
           </nav>
