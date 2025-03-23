@@ -4,8 +4,7 @@ import { useSidebar } from "@/context/SidebarContext";
 import { cn } from "@/lib/utils";
 import { 
   BarChart3, Calendar, Contact, FileText, 
-  Home, LineChart, PieChart, User, Users, HelpCircle, X, Menu,
-  Search
+  Home, LineChart, PieChart, User, Users, HelpCircle, X
 } from "lucide-react";
 
 interface SidebarItemProps {
@@ -59,7 +58,7 @@ const Sidebar = () => {
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-40 w-64 bg-sidebar-background transform transition-transform duration-300 ease-in-out lg:translate-x-0 overflow-hidden flex flex-col",
+          "fixed inset-y-0 left-0 z-40 w-64 transform transition-transform duration-300 ease-in-out lg:translate-x-0",
           isOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
@@ -72,20 +71,8 @@ const Sidebar = () => {
             <X size={20} />
           </button>
 
-          {/* Search box at the top */}
-          <div className="p-4">
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Search"
-                className="w-full bg-[#283046] text-white py-2 pl-9 pr-4 rounded-md border-none focus:outline-none focus:ring-1 focus:ring-blue-500"
-              />
-              <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
-            </div>
-          </div>
-
           {/* Dashboard heading */}
-          <div className="px-4 py-2">
+          <div className="px-4 py-2 mt-4">
             <h1 className="text-2xl font-bold text-white">Dashboard</h1>
             <p className="text-sm text-[#8a92a6] mt-1">Overview of your business</p>
           </div>
