@@ -10,15 +10,15 @@ interface SidebarContextProps {
 const SidebarContext = createContext<SidebarContextProps | undefined>(undefined);
 
 export function SidebarProvider({ children }: { children: React.ReactNode }) {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false); // Changed to start closed by default
 
-  // Close sidebar by default on mobile
+  // Set initial state based on screen size
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 1024) {
         setIsOpen(false);
       } else {
-        setIsOpen(true);
+        setIsOpen(true); // Default open on desktop
       }
     };
 

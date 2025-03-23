@@ -58,8 +58,10 @@ const Sidebar = () => {
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-40 w-64 transform transition-transform duration-300 ease-in-out lg:translate-x-0",
-          isOpen ? "translate-x-0" : "-translate-x-full"
+          "fixed inset-y-0 left-0 z-40 w-64 transform transition-transform duration-300 ease-in-out",
+          isOpen ? "translate-x-0" : "-translate-x-full",
+          // Important: Make sure lg:translate-x-0 is applied only on large screens AND when not toggled off
+          "lg:translate-x-0"
         )}
       >
         <div className="flex flex-col h-full overflow-y-auto bg-[#1a2233] no-scrollbar">

@@ -13,7 +13,7 @@ const TopBar = () => {
       <div className="flex items-center gap-4">
         <button 
           onClick={toggle}
-          className="p-2 rounded-md hover:bg-[#283046] transition-colors text-white"
+          className="p-2 rounded-md hover:bg-[#283046] transition-colors text-white lg:flex"
           aria-label={isOpen ? "Close sidebar" : "Open sidebar"}
         >
           <Menu size={20} />

@@ -26,7 +26,10 @@ const Layout = () => {
       <main
         className={cn(
           "transition-all duration-300 ease-in-out min-h-screen",
-          isOpen ? "lg:ml-64" : "ml-0"
+          // Always apply the margin on desktop regardless of sidebar state
+          "lg:ml-64",
+          // Only move content when sidebar is open on mobile
+          isOpen && window.innerWidth < 1024 ? "ml-64" : "ml-0"
         )}
       >
         <TopBar />
