@@ -6,6 +6,7 @@ import {
   BarChart3, Calendar, Contact, FileText, 
   Home, LineChart, PieChart, User, Users, HelpCircle, X
 } from "lucide-react";
+import { useTheme } from "@/context/ThemeContext";
 
 interface SidebarItemProps {
   to: string;
@@ -15,6 +16,8 @@ interface SidebarItemProps {
 
 const SidebarItem = ({ to, icon, label }: SidebarItemProps) => {
   const { close } = useSidebar();
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
   
   // Close sidebar on mobile when clicking a link
   const handleClick = () => {
@@ -30,8 +33,12 @@ const SidebarItem = ({ to, icon, label }: SidebarItemProps) => {
       className={({ isActive }) =>
         cn(
           "flex items-center gap-3 px-3 py-2 rounded-md transition-colors", 
-          "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-          isActive ? "bg-sidebar-accent text-sidebar-accent-foreground font-medium" : "text-sidebar-foreground"
+          isDark 
+            ? "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground" 
+            : "hover:bg-gray-100",
+          isActive 
+            ? (isDark ? "bg-sidebar-accent text-white font-medium" : "bg-gray-100 text-blue-600 font-medium")
+            : (isDark ? "text-sidebar-foreground" : "text-gray-700")
         )
       }
     >
@@ -43,6 +50,8 @@ const SidebarItem = ({ to, icon, label }: SidebarItemProps) => {
 
 const Sidebar = () => {
   const { isOpen, toggle } = useSidebar();
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
 
   return (
     <>
@@ -64,48 +73,69 @@ const Sidebar = () => {
           "lg:translate-x-0"
         )}
       >
-        <div className="flex flex-col h-full overflow-y-auto bg-[#1a2233] no-scrollbar">
+        <div className={cn(
+          "flex flex-col h-full overflow-y-auto no-scrollbar",
+          isDark ? "bg-[#1a2233]" : "bg-white border-r border-gray-200"
+        )}>
           {/* Close button for mobile */}
           <button 
             onClick={toggle}
-            className="lg:hidden absolute top-4 right-4 p-2 rounded-md bg-[#283046] text-white"
+            className={cn(
+              "lg:hidden absolute top-4 right-4 p-2 rounded-md",
+              isDark ? "bg-[#283046] text-white" : "bg-gray-100 text-gray-700"
+            )}
           >
             <X size={20} />
           </button>
 
           {/* Dashboard heading */}
           <div className="px-4 py-2 mt-4">
-            <h1 className="text-2xl font-bold text-white">Dashboard</h1>
-            <p className="text-sm text-[#8a92a6] mt-1">Overview of your business</p>
+            <h1 className={cn(
+              "text-2xl font-bold",
+              isDark ? "text-white" : "text-gray-900"
+            )}>Dashboard</h1>
+            <p className={cn(
+              "text-sm mt-1",
+              isDark ? "text-[#8a92a6]" : "text-gray-500"
+            )}>Overview of your business</p>
           </div>
 
           {/* Navigation */}
           <nav className="flex-1 p-4 space-y-6">
             <div className="mb-2">
-              <p className="text-xs uppercase text-[#8a92a6] mb-3 px-3 font-semibold tracking-wider">Data</p>
+              <p className={cn(
+                "text-xs uppercase mb-3 px-3 font-semibold tracking-wider",
+                isDark ? "text-[#8a92a6]" : "text-gray-500"
+              )}>Data</p>
               <div className="space-y-1">
-                <SidebarItem to="/" icon={<Home size={18} className="text-[#8a92a6]" />} label="Dashboard" />
-                <SidebarItem to="/team" icon={<Users size={18} className="text-[#8a92a6]" />} label="Manage Team" />
-                <SidebarItem to="/contacts" icon={<Contact size={18} className="text-[#8a92a6]" />} label="Contacts Information" />
-                <SidebarItem to="/invoices" icon={<FileText size={18} className="text-[#8a92a6]" />} label="Invoices Balances" />
+                <SidebarItem to="/" icon={<Home size={18} className={isDark ? "text-[#8a92a6]" : "text-gray-500"} />} label="Dashboard" />
+                <SidebarItem to="/team" icon={<Users size={18} className={isDark ? "text-[#8a92a6]" : "text-gray-500"} />} label="Manage Team" />
+                <SidebarItem to="/contacts" icon={<Contact size={18} className={isDark ? "text-[#8a92a6]" : "text-gray-500"} />} label="Contacts Information" />
+                <SidebarItem to="/invoices" icon={<FileText size={18} className={isDark ? "text-[#8a92a6]" : "text-gray-500"} />} label="Invoices Balances" />
               </div>
             </div>
             
             <div className="mb-2">
-              <p className="text-xs uppercase text-[#8a92a6] mb-3 px-3 font-semibold tracking-wider">Pages</p>
+              <p className={cn(
+                "text-xs uppercase mb-3 px-3 font-semibold tracking-wider",
+                isDark ? "text-[#8a92a6]" : "text-gray-500"
+              )}>Pages</p>
               <div className="space-y-1">
-                <SidebarItem to="/profile" icon={<User size={18} className="text-[#8a92a6]" />} label="Profile Form" />
-                <SidebarItem to="/calendar" icon={<Calendar size={18} className="text-[#8a92a6]" />} label="Calendar" />
-                <SidebarItem to="/faq" icon={<HelpCircle size={18} className="text-[#8a92a6]" />} label="FAQ Page" />
+                <SidebarItem to="/profile" icon={<User size={18} className={isDark ? "text-[#8a92a6]" : "text-gray-500"} />} label="Profile Form" />
+                <SidebarItem to="/calendar" icon={<Calendar size={18} className={isDark ? "text-[#8a92a6]" : "text-gray-500"} />} label="Calendar" />
+                <SidebarItem to="/faq" icon={<HelpCircle size={18} className={isDark ? "text-[#8a92a6]" : "text-gray-500"} />} label="FAQ Page" />
               </div>
             </div>
             
             <div>
-              <p className="text-xs uppercase text-[#8a92a6] mb-3 px-3 font-semibold tracking-wider">Charts</p>
+              <p className={cn(
+                "text-xs uppercase mb-3 px-3 font-semibold tracking-wider",
+                isDark ? "text-[#8a92a6]" : "text-gray-500"
+              )}>Charts</p>
               <div className="space-y-1">
-                <SidebarItem to="/bar-chart" icon={<BarChart3 size={18} className="text-[#8a92a6]" />} label="Bar Chart" />
-                <SidebarItem to="/pie-chart" icon={<PieChart size={18} className="text-[#8a92a6]" />} label="Pie Chart" />
-                <SidebarItem to="/line-chart" icon={<LineChart size={18} className="text-[#8a92a6]" />} label="Line Chart" />
+                <SidebarItem to="/bar-chart" icon={<BarChart3 size={18} className={isDark ? "text-[#8a92a6]" : "text-gray-500"} />} label="Bar Chart" />
+                <SidebarItem to="/pie-chart" icon={<PieChart size={18} className={isDark ? "text-[#8a92a6]" : "text-gray-500"} />} label="Pie Chart" />
+                <SidebarItem to="/line-chart" icon={<LineChart size={18} className={isDark ? "text-[#8a92a6]" : "text-gray-500"} />} label="Line Chart" />
               </div>
             </div>
           </nav>

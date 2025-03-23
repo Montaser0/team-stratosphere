@@ -3,17 +3,26 @@ import { useTheme } from "@/context/ThemeContext";
 import { useSidebar } from "@/context/SidebarContext";
 import { Bell, Download, Menu, Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 const TopBar = () => {
   const { theme, toggleTheme } = useTheme();
   const { isOpen, toggle } = useSidebar();
 
+  const isDark = theme === "dark";
+
   return (
-    <div className="h-16 px-4 border-b bg-[#1a2233] flex items-center justify-between sticky top-0 z-20">
+    <div className={cn(
+      "h-16 px-4 border-b flex items-center justify-between sticky top-0 z-20",
+      isDark ? "bg-[#1a2233]" : "bg-white border-gray-200"
+    )}>
       <div className="flex items-center gap-4">
         <button 
           onClick={toggle}
-          className="p-2 rounded-md hover:bg-[#283046] transition-colors text-white lg:flex"
+          className={cn(
+            "p-2 rounded-md transition-colors lg:flex",
+            isDark ? "hover:bg-[#283046] text-white" : "hover:bg-gray-100 text-gray-700"
+          )}
           aria-label={isOpen ? "Close sidebar" : "Open sidebar"}
         >
           <Menu size={20} />
@@ -23,14 +32,20 @@ const TopBar = () => {
       <div className="flex items-center gap-2">
         <button 
           onClick={toggleTheme}
-          className="p-2 rounded-md hover:bg-[#283046] transition-colors text-white"
-          aria-label={theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
+          className={cn(
+            "p-2 rounded-md transition-colors",
+            isDark ? "hover:bg-[#283046] text-white" : "hover:bg-gray-100 text-gray-700"
+          )}
+          aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
         >
-          {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
+          {isDark ? <Sun size={20} /> : <Moon size={20} />}
         </button>
         
         <button 
-          className="p-2 rounded-md hover:bg-[#283046] transition-colors text-white"
+          className={cn(
+            "p-2 rounded-md transition-colors",
+            isDark ? "hover:bg-[#283046] text-white" : "hover:bg-gray-100 text-gray-700"
+          )}
           aria-label="Notifications"
         >
           <Bell size={20} />

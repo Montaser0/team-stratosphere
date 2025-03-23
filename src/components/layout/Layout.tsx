@@ -5,9 +5,11 @@ import TopBar from "./TopBar";
 import { useSidebar } from "@/context/SidebarContext";
 import { cn } from "@/lib/utils";
 import { useEffect } from "react";
+import { useTheme } from "@/context/ThemeContext";
 
 const Layout = () => {
   const { isOpen } = useSidebar();
+  const { theme } = useTheme();
 
   // Force re-render on resize to ensure correct layout
   useEffect(() => {
@@ -21,7 +23,10 @@ const Layout = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#131c32]">
+    <div className={cn(
+      "min-h-screen",
+      theme === "dark" ? "bg-[#131c32]" : "bg-white"
+    )}>
       <Sidebar />
       <main
         className={cn(
