@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import { useTheme } from "@/context/ThemeContext";
 
 const Layout = () => {
-  const { isOpen } = useSidebar();
+  const { isOpen, isCollapsed } = useSidebar();
   const { theme } = useTheme();
 
   // Force re-render on resize to ensure correct layout
@@ -31,10 +31,10 @@ const Layout = () => {
       <main
         className={cn(
           "transition-all duration-300 ease-in-out min-h-screen",
-          // Always apply the margin on desktop regardless of sidebar state
-          "lg:ml-64",
+          // Apply different margins based on sidebar state
+          isCollapsed ? "lg:ml-16" : "lg:ml-64",
           // Only move content when sidebar is open on mobile
-          isOpen && window.innerWidth < 1024 ? "ml-64" : "ml-0"
+          isOpen && window.innerWidth < 1024 ? (isCollapsed ? "ml-16" : "ml-64") : "ml-0"
         )}
       >
         <TopBar />

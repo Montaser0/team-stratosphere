@@ -2,11 +2,12 @@
 import { NavLink } from "react-router-dom";
 import { useSidebar } from "@/context/SidebarContext";
 import { cn } from "@/lib/utils";
+import { useTheme } from "@/context/ThemeContext";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { 
   BarChart3, Calendar, Contact, FileText, 
-  Home, LineChart, PieChart, User, Users, HelpCircle, X
+  Home, LineChart, PieChart, User, Users, HelpCircle, ChevronRight
 } from "lucide-react";
-import { useTheme } from "@/context/ThemeContext";
 
 interface SidebarItemProps {
   to: string;
@@ -15,9 +16,7 @@ interface SidebarItemProps {
 }
 
 const SidebarItem = ({ to, icon, label }: SidebarItemProps) => {
-  const { close } = useSidebar();
-  const { theme } = useTheme();
-  const isDark = theme === "dark";
+  const { close, isCollapsed } = useSidebar();
   
   // Close sidebar on mobile when clicking a link
   const handleClick = () => {
@@ -32,31 +31,44 @@ const SidebarItem = ({ to, icon, label }: SidebarItemProps) => {
       onClick={handleClick}
       className={({ isActive }) =>
         cn(
-          "flex items-center gap-3 px-3 py-2 rounded-md transition-colors", 
-          isDark 
-            ? "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground" 
-            : "hover:bg-gray-100",
-          isActive 
-            ? (isDark ? "bg-sidebar-accent text-white font-medium" : "bg-gray-100 text-blue-600 font-medium")
-            : (isDark ? "text-sidebar-foreground" : "text-gray-700")
+          "flex items-center gap-3 px-3 py-2.5 my-1 rounded-md transition-colors", 
+          "text-gray-300 hover:bg-[#1d2942] hover:text-white",
+          isActive && "bg-[#1d2942] text-white"
         )
       }
     >
-      {icon}
-      <span className="font-medium">{label}</span>
+      <span className="text-[#8a92a6]">{icon}</span>
+      {!isCollapsed && <span className="font-medium whitespace-nowrap">{label}</span>}
     </NavLink>
   );
 };
 
+const SidebarSection = ({ title, children }: { title: string, children: React.ReactNode }) => {
+  const { isCollapsed } = useSidebar();
+  
+  return (
+    <div className="mb-6">
+      {!isCollapsed && (
+        <p className="text-xs uppercase px-3 mb-2 font-semibold tracking-wider text-[#8a92a6]">
+          {title}
+        </p>
+      )}
+      <div className="space-y-1">
+        {children}
+      </div>
+    </div>
+  );
+};
+
 const Sidebar = () => {
-  const { isOpen, toggle } = useSidebar();
+  const { isOpen, toggle, isCollapsed, toggleCollapse } = useSidebar();
   const { theme } = useTheme();
   const isDark = theme === "dark";
 
   return (
     <>
       {/* Mobile overlay to close sidebar when clicking outside */}
-      {isOpen && (
+      {isOpen && window.innerWidth < 1024 && (
         <div 
           className="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-30"
           onClick={toggle}
@@ -67,78 +79,74 @@ const Sidebar = () => {
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-40 w-64 transform transition-transform duration-300 ease-in-out",
+          "fixed inset-y-0 left-0 z-40 transform transition-all duration-300 ease-in-out",
+          isCollapsed ? "w-16" : "w-64",
           isOpen ? "translate-x-0" : "-translate-x-full",
-          // Important: Make sure lg:translate-x-0 is applied only on large screens AND when not toggled off
+          // Important: Make sure lg:translate-x-0 is applied only on large screens
           "lg:translate-x-0"
         )}
       >
-        <div className={cn(
-          "flex flex-col h-full overflow-y-auto no-scrollbar",
-          isDark ? "bg-[#1a2233]" : "bg-white border-r border-gray-200"
-        )}>
-          {/* Close button for mobile */}
-          <button 
-            onClick={toggle}
-            className={cn(
-              "lg:hidden absolute top-4 right-4 p-2 rounded-md",
-              isDark ? "bg-[#283046] text-white" : "bg-gray-100 text-gray-700"
-            )}
-          >
-            <X size={20} />
-          </button>
-
-          {/* Dashboard heading */}
-          <div className="px-4 py-2 mt-4">
-            <h1 className={cn(
-              "text-2xl font-bold",
-              isDark ? "text-white" : "text-gray-900"
-            )}>Dashboard</h1>
-            <p className={cn(
-              "text-sm mt-1",
-              isDark ? "text-[#8a92a6]" : "text-gray-500"
-            )}>Overview of your business</p>
-          </div>
-
+        <div className="flex flex-col h-full overflow-y-auto no-scrollbar bg-[#1a2233]">
+          {/* User profile section - only shown when not collapsed */}
+          {!isCollapsed ? (
+            <div className="px-4 py-6 text-center border-b border-[#283046]">
+              <div className="mb-3 mx-auto">
+                <Avatar className="h-20 w-20 mx-auto">
+                  <AvatarImage src="/lovable-uploads/7ac82091-05ed-4107-9d1b-b215ff4ed940.png" alt="Montaser Hai Omar" />
+                  <AvatarFallback>MO</AvatarFallback>
+                </Avatar>
+              </div>
+              <h2 className="text-white text-lg font-semibold">Montaser Hai Omar</h2>
+              <p className="text-[#42DDCD] text-sm">Website Admin</p>
+            </div>
+          ) : (
+            <div className="p-3 flex justify-center border-b border-[#283046]">
+              <button 
+                onClick={toggleCollapse}
+                className="p-2 rounded-md text-gray-300 hover:bg-[#283046]"
+              >
+                <ChevronRight className={cn("transition-transform", !isCollapsed && "rotate-180")} size={20} />
+              </button>
+            </div>
+          )}
+          
           {/* Navigation */}
-          <nav className="flex-1 p-4 space-y-6">
-            <div className="mb-2">
-              <p className={cn(
-                "text-xs uppercase mb-3 px-3 font-semibold tracking-wider",
-                isDark ? "text-[#8a92a6]" : "text-gray-500"
-              )}>Data</p>
-              <div className="space-y-1">
-                <SidebarItem to="/" icon={<Home size={18} className={isDark ? "text-[#8a92a6]" : "text-gray-500"} />} label="Dashboard" />
-                <SidebarItem to="/team" icon={<Users size={18} className={isDark ? "text-[#8a92a6]" : "text-gray-500"} />} label="Manage Team" />
-                <SidebarItem to="/contacts" icon={<Contact size={18} className={isDark ? "text-[#8a92a6]" : "text-gray-500"} />} label="Contacts Information" />
-                <SidebarItem to="/invoices" icon={<FileText size={18} className={isDark ? "text-[#8a92a6]" : "text-gray-500"} />} label="Invoices Balances" />
-              </div>
-            </div>
+          <nav className={cn("flex-1 px-2 py-4", isCollapsed && "px-1")}>
+            {!isCollapsed && (
+              <SidebarItem to="/" icon={<Home size={20} />} label="Dashboard" />
+            )}
             
-            <div className="mb-2">
-              <p className={cn(
-                "text-xs uppercase mb-3 px-3 font-semibold tracking-wider",
-                isDark ? "text-[#8a92a6]" : "text-gray-500"
-              )}>Pages</p>
-              <div className="space-y-1">
-                <SidebarItem to="/profile" icon={<User size={18} className={isDark ? "text-[#8a92a6]" : "text-gray-500"} />} label="Profile Form" />
-                <SidebarItem to="/calendar" icon={<Calendar size={18} className={isDark ? "text-[#8a92a6]" : "text-gray-500"} />} label="Calendar" />
-                <SidebarItem to="/faq" icon={<HelpCircle size={18} className={isDark ? "text-[#8a92a6]" : "text-gray-500"} />} label="FAQ Page" />
-              </div>
-            </div>
+            <SidebarSection title="Data">
+              <SidebarItem to="/team" icon={<Users size={20} />} label="Manage Team" />
+              <SidebarItem to="/contacts" icon={<Contact size={20} />} label="Contacts Information" />
+              <SidebarItem to="/invoices" icon={<FileText size={20} />} label="Invoices Balances" />
+            </SidebarSection>
             
-            <div>
-              <p className={cn(
-                "text-xs uppercase mb-3 px-3 font-semibold tracking-wider",
-                isDark ? "text-[#8a92a6]" : "text-gray-500"
-              )}>Charts</p>
-              <div className="space-y-1">
-                <SidebarItem to="/bar-chart" icon={<BarChart3 size={18} className={isDark ? "text-[#8a92a6]" : "text-gray-500"} />} label="Bar Chart" />
-                <SidebarItem to="/pie-chart" icon={<PieChart size={18} className={isDark ? "text-[#8a92a6]" : "text-gray-500"} />} label="Pie Chart" />
-                <SidebarItem to="/line-chart" icon={<LineChart size={18} className={isDark ? "text-[#8a92a6]" : "text-gray-500"} />} label="Line Chart" />
-              </div>
-            </div>
+            <SidebarSection title="Pages">
+              <SidebarItem to="/profile" icon={<User size={20} />} label="Profile Form" />
+              <SidebarItem to="/calendar" icon={<Calendar size={20} />} label="Calendar" />
+              <SidebarItem to="/faq" icon={<HelpCircle size={20} />} label="FAQ Page" />
+            </SidebarSection>
+            
+            <SidebarSection title="Charts">
+              <SidebarItem to="/bar-chart" icon={<BarChart3 size={20} />} label="Bar Chart" />
+              <SidebarItem to="/pie-chart" icon={<PieChart size={20} />} label="Pie Chart" />
+              <SidebarItem to="/line-chart" icon={<LineChart size={20} />} label="Line Chart" />
+            </SidebarSection>
           </nav>
+          
+          {/* Collapse button */}
+          {!isCollapsed && (
+            <div className="p-4 border-t border-[#283046]">
+              <button 
+                onClick={toggleCollapse}
+                className="flex items-center gap-2 w-full px-3 py-2 rounded-md text-gray-300 hover:bg-[#1d2942] hover:text-white transition-colors"
+              >
+                <ChevronRight className="rotate-180" size={20} />
+                <span>Collapse Sidebar</span>
+              </button>
+            </div>
+          )}
         </div>
       </aside>
     </>
