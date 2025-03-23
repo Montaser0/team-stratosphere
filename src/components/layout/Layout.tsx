@@ -4,9 +4,21 @@ import Sidebar from "./Sidebar";
 import TopBar from "./TopBar";
 import { useSidebar } from "@/context/SidebarContext";
 import { cn } from "@/lib/utils";
+import { useEffect } from "react";
 
 const Layout = () => {
   const { isOpen } = useSidebar();
+
+  // Force re-render on resize to ensure correct layout
+  useEffect(() => {
+    const handleResize = () => {
+      // This is just to trigger a re-render
+      window.dispatchEvent(new CustomEvent('layout-update'));
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#131c32]">

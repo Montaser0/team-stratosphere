@@ -32,7 +32,10 @@ export function SidebarProvider({ children }: { children: React.ReactNode }) {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const toggle = () => setIsOpen((prev) => !prev);
+  const toggle = () => {
+    setIsOpen((prev) => !prev);
+  };
+  
   const close = () => setIsOpen(false);
 
   return (

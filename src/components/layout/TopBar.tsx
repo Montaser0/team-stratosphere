@@ -2,7 +2,6 @@
 import { useTheme } from "@/context/ThemeContext";
 import { useSidebar } from "@/context/SidebarContext";
 import { Bell, Download, Menu, Moon, Sun } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
 const TopBar = () => {
